@@ -1,0 +1,4 @@
+nose
+pyyaml
+coveralls
+coverage
