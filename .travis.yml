@@ -3,6 +3,7 @@ python:
   - "3.6"
 script:
   - nosetests --with-coverage --cover-package=chess_move_checker
+  - pylint -E chess_move_checker
 install:
   - pip install -e .
 after_success:

@@ -2,3 +2,4 @@ nose
 pyyaml
 coveralls
 coverage
+pylint
