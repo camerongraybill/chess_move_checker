@@ -1,4 +1,2 @@
 class Piece:
     pass
-
-x
