@@ -7,6 +7,7 @@ class Color(Enum):
 
     @property
     def letter(self):
+        # pylint: disable=unsubscriptable-object
         return self.value[0]
 
     @property
