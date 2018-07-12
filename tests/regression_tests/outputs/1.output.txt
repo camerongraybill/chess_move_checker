@@ -1,0 +1,1 @@
+LEGAL MOVES FOR Rf1: e1, d1, c1, b1, a1
