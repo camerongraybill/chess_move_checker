@@ -1,0 +1,1 @@
+LEGAL MOVES FOR Bd5: e6, f7, g8, c4, b3, a2, c6, b7, e4, f3, g2, h1

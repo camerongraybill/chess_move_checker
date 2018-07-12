@@ -63,13 +63,14 @@ class Piece(ABC):
             except KeyError:
                 pass
 
-    def _get_l_moves(self, board, position):
+    @staticmethod
+    def _get_l_moves(board, position):
         x_pos = position.location[0]
         y_pos = position.location[1]
 
         for x, y in product([-2, -1, 1, 2], [-2, -1, 1, 2]):
             if abs(x) != abs(y):
                 try:
-                    yield board.Move(position, board((x_pos + x, y_pos + y)))
+                    yield board.Move(position, board.get_board_location((x_pos + x, y_pos + y)))
                 except KeyError:
                     pass

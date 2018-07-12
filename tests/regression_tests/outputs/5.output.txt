@@ -1,0 +1,1 @@
+LEGAL MOVES FOR Ne8: d6, f6, g7

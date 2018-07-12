@@ -3,7 +3,8 @@ from typing import List
 
 
 class MoveCalculator:
-    def get_valid_moves(self, board: Board, position: Board.BoardLocation) -> List[Board.BoardLocation]:
+    @staticmethod
+    def get_valid_moves(board: Board, position: Board.BoardLocation) -> List[Board.BoardLocation]:
         if position.empty:
             return []
         else:

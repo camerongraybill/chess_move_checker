@@ -1,0 +1,1 @@
+LEGAL MOVES FOR Kg1: f2, g2, h1

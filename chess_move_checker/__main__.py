@@ -11,9 +11,9 @@ def get_args():
 
 def main():
     args = get_args()
-    board, position = Parser().parse_file(args.input_file)
+    board, position = Parser.parse_file(args.input_file)
     output_message = "LEGAL MOVES FOR {}{}{}:".format(position.value.character, chr(ord('a') - 1 + position.location[0]), position.location[1])
-    for move in MoveCalculator().get_valid_moves(board, position):
+    for move in MoveCalculator.get_valid_moves(board, position):
         output_message += " {}{},".format(chr(ord('a') - 1 + move.end.location[0]), move.end.location[1])
     print(output_message[:-1])
 

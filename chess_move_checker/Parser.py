@@ -18,10 +18,12 @@ class ParseException(Exception):
 
 
 class Parser:
-    def _string_repr_to_piece_and_pos(self, string_repr: str, color: Color) -> Tuple[Piece, Tuple[str, int]]:
+    @staticmethod
+    def _string_repr_to_piece_and_pos(string_repr: str, color: Color) -> Tuple[Piece, Tuple[str, int]]:
         return _char_to_piece[string_repr[0]](color), (string_repr[1], int(string_repr[2]))
 
-    def parse_file(self, path: str) -> Tuple[Board, Board.BoardLocation]:
+    @staticmethod
+    def parse_file(path: str) -> Tuple[Board, Board.BoardLocation]:
         b = Board()
         with open(path) as f:
             white_line = f.readline()
@@ -40,9 +42,9 @@ class Parser:
             else:
                 raise ParseException()
         for str_representation in white_splits:
-            piece, pos = self._string_repr_to_piece_and_pos(str_representation, Color.WHITE)
+            piece, pos = Parser._string_repr_to_piece_and_pos(str_representation, Color.WHITE)
             b[pos] = piece
         for str_representation in black_splits:
-            piece, pos = self._string_repr_to_piece_and_pos(str_representation, Color.BLACK)
+            piece, pos = Parser._string_repr_to_piece_and_pos(str_representation, Color.BLACK)
             b[pos] = piece
         return b, b.get_board_location((target_str[1], int(target_str[2])))
