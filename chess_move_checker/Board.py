@@ -1,6 +1,8 @@
 from typing import Optional, Tuple, Union
-from .pieces.Piece import Piece
+from .pieces import Piece, King
 from copy import deepcopy
+from itertools import chain
+
 
 class Board:
     """ A representation of a board """
@@ -62,6 +64,10 @@ class Board:
         @property
         def end(self):
             return self._to
+
+        @property
+        def applied_state(self):
+            return self.end.board.apply_move_copy(self)
 
         @property
         def traversed_pieces(self):
@@ -149,3 +155,13 @@ class Board:
 
     def __repr__(self):
         return self.__str__()
+
+    def is_winner(self, color):
+        return not any(x.value == King(color.opponent_color) for x in
+                       chain.from_iterable(y.values() for y in self._state.values()))
+
+    def all_moves_for_color(self, color):
+        for position in chain.from_iterable(y.values() for y in self._state.values()):
+            if position.value and position.value.color == color:
+                for x in position.value.get_possible_moves(self, position):
+                    yield x

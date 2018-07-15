@@ -1,1 +1,1 @@
-LEGAL MOVES FOR Qc6: d7, e8, b5, a4, b7, d6, e6, f6, g6, h6, c7, b6, a6, c5, c4, c3, c2, c1
+LEGAL MOVES FOR Qc6

@@ -48,3 +48,17 @@ class Parser:
             piece, pos = Parser._string_repr_to_piece_and_pos(str_representation, Color.BLACK)
             b[pos] = piece
         return b, b.get_board_location((target_str[1], int(target_str[2])))
+
+    @staticmethod
+    def parse_command_line():
+        b = Board()
+        white_splits = [x.strip() for x in input("WHITE: ").split(",")]
+        black_splits = [x.strip() for x in input("BLACK: ").split(",")]
+        target_str = input("PIECE TO MOVE: ").split(",")
+        for str_representation in white_splits:
+            piece, pos = Parser._string_repr_to_piece_and_pos(str_representation, Color.WHITE)
+            b[pos] = piece
+        for str_representation in black_splits:
+            piece, pos = Parser._string_repr_to_piece_and_pos(str_representation, Color.BLACK)
+            b[pos] = piece
+        return b, b.get_board_location((target_str[1], int(target_str[2])))

@@ -8,5 +8,5 @@ class MoveCalculator:
         if position.empty:
             return []
         else:
-            return position.value.get_possible_moves(board, position)
+            return position.value.get_valid_moves(board, position)
 

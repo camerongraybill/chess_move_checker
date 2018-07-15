@@ -12,7 +12,14 @@ class Color(Enum):
 
     @property
     def direction(self):
-        if self.value == "black":
+        if self == Color.BLACK:
             return -1
         else:
             return 1
+
+    @property
+    def opponent_color(self):
+        if self == Color.BLACK:
+            return Color.WHITE
+        else:
+            return Color.BLACK
