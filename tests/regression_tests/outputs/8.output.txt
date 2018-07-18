@@ -1,0 +1,1 @@
+Invalid board state: Opponent cannot be in check

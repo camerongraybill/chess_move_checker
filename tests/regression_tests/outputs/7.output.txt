@@ -1,0 +1,1 @@
+Invalid board state: Each player cannot have more than 8 pawns or promoted pieces

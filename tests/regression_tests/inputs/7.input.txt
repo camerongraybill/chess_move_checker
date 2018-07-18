@@ -1,0 +1,3 @@
+WHITE: Pf1, Pf2, Pf3, Pf4, Pf5, Pf6, Pf7, Pf8, Pa2, Kb4
+BLACK: Kb8, Ne8, Pa7, Pb7, Pc7, Ra5
+PIECE TO MOVE: Rf1

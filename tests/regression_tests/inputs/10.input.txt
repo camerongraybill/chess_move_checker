@@ -1,0 +1,3 @@
+WHITE: Ra3, Rd1, Bc3, Kh8
+BLACK: Ka1, Qc7
+PIECE TO MOVE: Qc7

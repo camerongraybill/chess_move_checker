@@ -1,5 +1,5 @@
 from typing import Optional, Tuple, Union
-from .pieces import Piece, King
+from .pieces import Piece, King, Pawn, Queen, Bishop, Rook, Knight
 from copy import deepcopy
 from itertools import chain
 from .Types import Color
@@ -65,6 +65,28 @@ class Board:
         self._state = {x: {y: Board.BoardLocation(board=self, location=(x + 1, y + 1)) for y in range(8)} for x in
                        range(8)}
 
+    @staticmethod
+    def get_default_board():
+        b = Board()
+        for i in range(8):
+            b[i + 1, 2] = Pawn(Color.WHITE)
+            b[i + 1, 7] = Pawn(Color.BLACK)
+        for i in ('a', 'h'):
+            b[i, 1] = Rook(Color.WHITE)
+            b[i, 8] = Rook(Color.BLACK)
+        for i in ('b', 'g'):
+            b[i, 1] = Knight(Color.WHITE)
+            b[i, 8] = Knight(Color.BLACK)
+        for i in ('c', 'f'):
+            b[i, 1] = Bishop(Color.WHITE)
+            b[i, 8] = Bishop(Color.BLACK)
+        b['d', 1] = Queen(Color.WHITE)
+        b['d', 8] = Queen(Color.BLACK)
+        b['e', 1] = King(Color.WHITE)
+        b['e', 8] = King(Color.BLACK)
+        return b
+
+
     def apply_move_copy(self, move):
         cp = deepcopy(self)
         cp[move.end.location] = move.beg.value
@@ -114,7 +136,7 @@ class Board:
     @property
     def winner(self):
         # Assume that this is at most one move after a valid board state so there should be at least 1 king
-        pieces_of_board = self.pieces()
+        pieces_of_board = list(self.pieces())
         black_king_exists = King(Color.BLACK) in pieces_of_board
         white_king_exists = King(Color.WHITE) in pieces_of_board
         if black_king_exists and white_king_exists:
