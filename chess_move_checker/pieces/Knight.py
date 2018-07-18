@@ -1,5 +1,6 @@
 from .Piece import Piece
 from ..Types import Color
+from ..Utils import color_or_empty, player_in_check, MovementPatterns
 
 
 class Knight(Piece):
@@ -10,11 +11,17 @@ class Knight(Piece):
     def character(self):
         return "N"
 
-    def get_possible_moves(self, board, my_position):
-        return self._get_l_moves(board, my_position)
+    @staticmethod
+    def get_possible_moves(board, my_position):
+        return MovementPatterns.get_l_moves(board, my_position)
 
-    def get_valid_moves(self, board, my_position):
-        for move in self.get_possible_moves(board, my_position):
-            if self._opponents_or_empty(move.end) and self._won_or_safe(move.applied_state):
-                yield move
+    @staticmethod
+    def _validate_move(move):
+        # For Knight pieces, a move is valid if:
+        # The end location is an opponents piece or is empty
+        # The player is not in check after the move
+        return color_or_empty(move.end, move.piece.color.opponent_color) \
+               and not player_in_check(move.applied_state, move.piece.color)
 
+    def get_winning_moves(self, board, my_position):
+        return (m for m in self.get_possible_moves(board, my_position) if m.is_winning_move)

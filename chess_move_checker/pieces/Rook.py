@@ -1,5 +1,6 @@
 from .Piece import Piece
 from ..Types import Color
+from ..Utils import MovementPatterns
 
 
 class Rook(Piece):
@@ -10,5 +11,6 @@ class Rook(Piece):
     def character(self):
         return "R"
 
-    def get_possible_moves(self, board, my_position):
-        return self._get_hor_vert_moves(board, my_position)
+    @staticmethod
+    def get_possible_moves(board, my_position):
+        return MovementPatterns.get_hor_vert_moves(board, my_position)

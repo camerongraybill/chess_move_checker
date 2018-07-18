@@ -1,5 +1,6 @@
 from .Piece import Piece
 from ..Types import Color
+from ..Utils import MovementPatterns
 
 
 class Bishop(Piece):
@@ -10,5 +11,6 @@ class Bishop(Piece):
     def character(self):
         return "B"
 
-    def get_possible_moves(self, board, my_position):
-        return self._get_diagonal_moves(board, my_position)
+    @staticmethod
+    def get_possible_moves(board, my_position):
+        return MovementPatterns.get_diagonal_moves(board, my_position)

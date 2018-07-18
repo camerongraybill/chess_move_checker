@@ -1,5 +1,6 @@
 from .Piece import Piece
 from ..Types import Color
+from ..Utils import MovementPatterns
 
 
 class King(Piece):
@@ -10,6 +11,6 @@ class King(Piece):
     def character(self):
         return "K"
 
-    def get_possible_moves(self, board, my_position):
-        return self._get_one_move_away(board, my_position)
-
+    @staticmethod
+    def get_possible_moves(board, my_position):
+        return MovementPatterns.get_one_move_away(board, my_position)

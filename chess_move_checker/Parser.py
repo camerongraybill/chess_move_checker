@@ -47,7 +47,7 @@ class Parser:
         for str_representation in black_splits:
             piece, pos = Parser._string_repr_to_piece_and_pos(str_representation, Color.BLACK)
             b[pos] = piece
-        return b, b.get_board_location((target_str[1], int(target_str[2])))
+        return b, b[target_str[1], int(target_str[2])]
 
     @staticmethod
     def parse_command_line():
@@ -61,4 +61,4 @@ class Parser:
         for str_representation in black_splits:
             piece, pos = Parser._string_repr_to_piece_and_pos(str_representation, Color.BLACK)
             b[pos] = piece
-        return b, b.get_board_location((target_str[1], int(target_str[2])))
+        return b, b[target_str[1], int(target_str[2])]

@@ -2,6 +2,7 @@ from typing import Optional, Tuple, Union
 from .pieces import Piece, King
 from copy import deepcopy
 from itertools import chain
+from .Types import Color
 
 
 class Board:
@@ -46,63 +47,19 @@ class Board:
             return self._x, self._y
 
         @property
+        def x(self):
+            return self._x
+
+        @property
+        def y(self):
+            return self._y
+
+        @property
         def empty(self):
             return self._val is None
 
         def __eq__(self, other):
             return self.__class__ == other.__class__ and self.value == other.value
-
-    class Move:
-        def __init__(self, initial_pos, final_pos):
-            self._from = initial_pos
-            self._to = final_pos
-
-        @property
-        def beg(self):
-            return self._from
-
-        @property
-        def end(self):
-            return self._to
-
-        @property
-        def applied_state(self):
-            return self.end.board.apply_move_copy(self)
-
-        @property
-        def traversed_pieces(self):
-            start_pos = self._from.location
-            end_pos = self._to.location
-            board = self._from.board
-            if start_pos[0] == end_pos[0]:
-                # If the X values are the same then just iterate the Y
-                for x in range(min(start_pos[1], end_pos[1]) + 1, max(start_pos[1], end_pos[1])):
-                    yield board[start_pos[0], x]
-            elif start_pos[1] == end_pos[1]:
-                # If the Y values are the same then just iterate the X
-                for x in range(min(start_pos[0], end_pos[0]) + 1, max(start_pos[0], end_pos[0])):
-                    yield board[x, start_pos[1]]
-            else:
-                def get_increment_pair():
-                    if start_pos[0] < end_pos[0]:
-                        if start_pos[1] < end_pos[1]:
-                            return 1, 1
-                        else:
-                            return 1, -1
-                    else:
-                        if start_pos[1] < end_pos[1]:
-                            return -1, 1
-                        else:
-                            return -1, -1
-
-                increment_value = get_increment_pair()
-                x, y = start_pos
-                x += increment_value[0]
-                y += increment_value[1]
-                while (x, y) != end_pos:
-                    yield board[x, y]
-                    x += increment_value[0]
-                    y += increment_value[1]
 
     def __init__(self):
         self._state = {x: {y: Board.BoardLocation(board=self, location=(x + 1, y + 1)) for y in range(8)} for x in
@@ -120,7 +77,7 @@ class Board:
             if len(first) != 1:
                 raise TypeError()
             first = ord(first) - (ord("a") - 1)
-        return self._state[first - 1][second - 1].value
+        return self._state[first - 1][second - 1]
 
     def __setitem__(self, pair: Tuple[Union[str, int], int], value: Optional[Piece]):
         first, second = pair
@@ -129,14 +86,6 @@ class Board:
                 raise TypeError()
             first = ord(first) - (ord("a") - 1)
         self._state[first - 1][second - 1].value = value
-
-    def get_board_location(self, pair: Tuple[Union[str, int], int]):
-        first, second = pair
-        if isinstance(first, str):
-            if len(first) != 1:
-                raise TypeError()
-            first = ord(first) - (ord("a") - 1)
-        return self._state[first - 1][second - 1]
 
     def __str__(self):
         bar = "|-----------------------|"
@@ -156,12 +105,21 @@ class Board:
     def __repr__(self):
         return self.__str__()
 
-    def is_winner(self, color):
-        return not any(x.value == King(color.opponent_color) for x in
-                       chain.from_iterable(y.values() for y in self._state.values()))
+    def __iter__(self):
+        return chain.from_iterable(y.values() for y in self._state.values())
 
-    def all_moves_for_color(self, color):
-        for position in chain.from_iterable(y.values() for y in self._state.values()):
-            if position.value and position.value.color == color:
-                for x in position.value.get_possible_moves(self, position):
-                    yield x
+    def pieces(self):
+        return (x.value for x in self if not x.empty)
+
+    @property
+    def winner(self):
+        # Assume that this is at most one move after a valid board state so there should be at least 1 king
+        pieces_of_board = self.pieces()
+        black_king_exists = King(Color.BLACK) in pieces_of_board
+        white_king_exists = King(Color.WHITE) in pieces_of_board
+        if black_king_exists and white_king_exists:
+            return None
+        elif black_king_exists:
+            return Color.WHITE
+        else:
+            return Color.BLACK

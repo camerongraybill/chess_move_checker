@@ -1,5 +1,7 @@
 from .Piece import Piece
 from ..Types import Color
+from ..Utils import player_in_check
+from ..Move import Move
 
 
 class Pawn(Piece):
@@ -10,36 +12,27 @@ class Pawn(Piece):
     def character(self):
         return "P"
 
-    def get_possible_moves(self, board, my_position):
-        y_position = my_position.location[1] + self.color.direction
-        current_x_position = my_position.location[0]
+    @staticmethod
+    def get_possible_moves(board, my_position):
+        y_position = my_position.y + my_position.value.color.direction
         for x in (-1, 0, 1):
             try:
-                yield board.Move(my_position, board.get_board_location((current_x_position + x, y_position)))
+                yield Move(my_position, board[my_position.x + x, y_position])
             except KeyError:
                 pass
 
-    def get_valid_moves(self, board, my_position):
-        y_position = my_position.location[1] + self.color.direction
-        current_x_position = my_position.location[0]
-        try:
-            pos = board.get_board_location((current_x_position - 1, y_position))
-            m = board.Move(my_position, pos)
-            if pos.value and pos.value.color != self.color and self._won_or_safe(m.applied_state):
-                yield m
-        except KeyError:
-            pass
-        try:
-            pos = board.get_board_location((current_x_position, y_position))
-            m = board.Move(my_position, pos)
-            if not pos.value and self._won_or_safe(m.applied_state):
-                yield m
-        except KeyError:
-            pass
-        try:
-            pos = board.get_board_location((current_x_position + 1, y_position))
-            m = board.Move(my_position, pos)
-            if pos.value and pos.value.color != self.color and self._won_or_safe(m.applied_state):
-                yield m
-        except KeyError:
-            pass
+    @staticmethod
+    def _validate_move(move):
+        if move.beg.x == move.end.x:
+            # Moving forward, no x change
+            # There must not be a piece there and can't move into check
+            return move.end.empty and not player_in_check(move.applied_state, move.piece.color)
+        else:
+            # Diagonal move, must be attack
+            # Must have opponents piece and can't move into check
+            return (not move.end.empty and move.end.value.color == move.piece.color.opponent_color)\
+                   and not player_in_check(move.applied_state, move.piece.color)
+
+    def get_winning_moves(self, board, my_position):
+        return (m for m in self.get_possible_moves(board, my_position) if m.is_winning_move
+                and m.beg.x != m.end.x)
