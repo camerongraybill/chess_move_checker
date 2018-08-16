@@ -20,17 +20,22 @@ class Pawn(Piece):
                 yield Move(my_position, board[my_position.x + x, y_position])
             except KeyError:
                 pass
+        try:
+            if my_position.y == my_position.value.color.home_row:
+                yield Move(my_position, board[my_position.x, my_position.y + 2 * my_position.value.color.direction])
+        except KeyError:
+            pass
 
     @staticmethod
     def _validate_move(move):
         if move.beg.x == move.end.x:
             # Moving forward, no x change
             # There must not be a piece there and can't move into check
-            return move.end.empty and not player_in_check(move.applied_state, move.piece.color)
+            return move.end.empty and not player_in_check(move.applied_state, move.piece.color) and not any(move.traversed_pieces)
         else:
             # Diagonal move, must be attack
             # Must have opponents piece and can't move into check
-            return (not move.end.empty and move.end.value.color == move.piece.color.opponent_color)\
+            return (not move.end.empty and move.end.value.color == move.piece.color.opponent_color) \
                    and not player_in_check(move.applied_state, move.piece.color)
 
     def get_winning_moves(self, board, my_position):

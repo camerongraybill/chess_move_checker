@@ -86,7 +86,6 @@ class Board:
         b['e', 8] = King(Color.BLACK)
         return b
 
-
     def apply_move_copy(self, move):
         cp = deepcopy(self)
         cp[move.end.location] = move.beg.value

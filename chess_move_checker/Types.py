@@ -18,6 +18,13 @@ class Color(Enum):
             return 1
 
     @property
+    def home_row(self):
+        if self == Color.BLACK:
+            return 7
+        else:
+            return 2
+
+    @property
     def opponent_color(self):
         if self == Color.BLACK:
             return Color.WHITE
