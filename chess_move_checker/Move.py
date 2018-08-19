@@ -1,4 +1,6 @@
 class Move:
+    """ Represents a move from one position to another """
+
     def __init__(self, initial_pos, final_pos):
         self._from = initial_pos
         self._to = final_pos
@@ -17,47 +19,45 @@ class Move:
 
     @property
     def applied_state(self):
+        """ Get what the board would look like after applying this move """
         return self.end.board.apply_move_copy(self)
 
     @property
     def is_winning_move(self):
-        # Check if this move takes the opponent's king
-        return not self.end.empty\
-               and self.end.value.color == self.piece.color.opponent_color\
+        """ Check if this move would win the game """
+        return not self.end.empty \
+               and self.end.value.color == self.piece.color.opponent_color \
                and self.end.value.character == "K"
 
     @property
     def traversed_pieces(self):
-        start_pos = self._from.location
-        end_pos = self._to.location
-        board = self._from.board
-        if start_pos[0] == end_pos[0]:
+        """ Get the list of all pieces between the move's begin and end pieces """
+        if self._from.x == self._to.x:
             # If the X values are the same then just iterate the Y
-            for x in range(min(start_pos[1], end_pos[1]) + 1, max(start_pos[1], end_pos[1])):
-                yield board[start_pos[0], x].value
-        elif start_pos[1] == end_pos[1]:
+            for y in range(min(self._from.y, self._to.y) + 1, max(self._from.y, self._to.y)):
+                yield self._from.board[self._from.x, y].value
+        elif self._from.y == self._to.y:
             # If the Y values are the same then just iterate the X
-            for x in range(min(start_pos[0], end_pos[0]) + 1, max(start_pos[0], end_pos[0])):
-                yield board[x, start_pos[1]].value
+            for x in range(min(self._from.x, self._to.x) + 1, max(self._from.x, self._to.x)):
+                yield self._from.board[x, self._from.y].value
         else:
-            def get_increment_pair():
-                if start_pos[0] < end_pos[0]:
-                    if start_pos[1] < end_pos[1]:
-                        return 1, 1
-                    else:
-                        return 1, -1
+            # Otherwise, iterate along the diagonal
+            if self._from.x < self._to.x:
+                if self._from.y < self._to.y:
+                    increment_value = 1, 1
                 else:
-                    if start_pos[1] < end_pos[1]:
-                        return -1, 1
-                    else:
-                        return -1, -1
+                    increment_value = 1, -1
+            else:
+                if self._from.y < self._to.y:
+                    increment_value = -1, 1
+                else:
+                    increment_value = -1, -1
 
-            increment_value = get_increment_pair()
-            x, y = start_pos
+            x, y = self._from.x, self._from.y
             x += increment_value[0]
             y += increment_value[1]
-            while (x, y) != end_pos:
-                yield board[x, y].value
+            while (x, y) != self._to.location:
+                yield self._from.board[x, y].value
                 x += increment_value[0]
                 y += increment_value[1]
 

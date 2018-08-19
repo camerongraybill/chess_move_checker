@@ -13,7 +13,8 @@ class Knight(Piece):
 
     @staticmethod
     def get_possible_moves(board, my_position):
-        return MovementPatterns.get_l_moves(board, my_position)
+        """ Knights move in an L """
+        yield from MovementPatterns.get_l_moves(board, my_position)
 
     @staticmethod
     def _validate_move(move):
@@ -24,4 +25,7 @@ class Knight(Piece):
                and not player_in_check(move.applied_state, move.piece.color)
 
     def get_winning_moves(self, board, my_position):
-        return (m for m in self.get_possible_moves(board, my_position) if m.is_winning_move)
+        """ Knights need to override the get winning moves function because they jump pieces """
+        for m in self.get_possible_moves(board, my_position):
+            if m.is_winning_move:
+                yield m

@@ -1,7 +1,7 @@
 from .Piece import Piece
+from ..Move import Move
 from ..Types import Color
 from ..Utils import player_in_check
-from ..Move import Move
 
 
 class Pawn(Piece):
@@ -14,24 +14,25 @@ class Pawn(Piece):
 
     @staticmethod
     def get_possible_moves(board, my_position):
-        y_position = my_position.y + my_position.value.color.direction
+        """ Pawns can either move forward one square,
+        forward two squares if on home row, or attack to a forward diagonal """
         for x in (-1, 0, 1):
             try:
-                yield Move(my_position, board[my_position.x + x, y_position])
+                yield Move(my_position, board[my_position.x + x, my_position.y + my_position.value.color.direction])
             except KeyError:
                 pass
-        try:
-            if my_position.y == my_position.value.color.home_row:
-                yield Move(my_position, board[my_position.x, my_position.y + 2 * my_position.value.color.direction])
-        except KeyError:
-            pass
+        # Try to double move if on home row
+        if my_position.y == my_position.value.color.home_row:
+            yield Move(my_position, board[my_position.x, my_position.y + 2 * my_position.value.color.direction])
 
     @staticmethod
     def _validate_move(move):
+        """ Pawns move validity is different because it can only attack on angles and only move on straight """
         if move.beg.x == move.end.x:
             # Moving forward, no x change
             # There must not be a piece there and can't move into check
-            return move.end.empty and not player_in_check(move.applied_state, move.piece.color) and not any(move.traversed_pieces)
+            return move.end.empty and not player_in_check(move.applied_state, move.piece.color) and not any(
+                move.traversed_pieces)
         else:
             # Diagonal move, must be attack
             # Must have opponents piece and can't move into check
@@ -39,5 +40,8 @@ class Pawn(Piece):
                    and not player_in_check(move.applied_state, move.piece.color)
 
     def get_winning_moves(self, board, my_position):
-        return (m for m in self.get_possible_moves(board, my_position) if m.is_winning_move
-                and m.beg.x != m.end.x)
+        """ A pawn can't actually ever get any winning moves, but theoretically it could.
+        Validate that it is an attack. """
+        for m in self.get_possible_moves(board, my_position):
+            if m.is_winning_move and m.beg.x != m.end.x:
+                yield m

@@ -1,22 +1,20 @@
-from typing import Optional, Tuple, Union
-from .pieces import Piece, King, Pawn, Queen, Bishop, Rook, Knight
 from copy import deepcopy
 from itertools import chain
+from typing import Optional, Tuple, Union
+
 from .Types import Color
+from .pieces import Piece, King, Pawn, Queen, Bishop, Rook, Knight
 
 
 class Board:
     """ A representation of a board """
 
     class BoardLocation:
+        """ Represents a square on the board """
         def __init__(self, board, val: Optional[Piece] = None, location: Optional[Tuple[int, int]] = None):
             self._val: Optional[Piece] = val
             self._board = board
-            if location is not None:
-                self._x, self._y = location
-            else:
-                self._x = None
-                self._y = None
+            self._x, self._y = location
 
         def debug_string(self):
             return "({x},{y}): {item}".format(x=self._x, y=self._y, item=self._val)
@@ -62,11 +60,13 @@ class Board:
             return self.__class__ == other.__class__ and self.value == other.value
 
     def __init__(self):
+        """ Initialize a board to 8x8 empty spaces """
         self._state = {x: {y: Board.BoardLocation(board=self, location=(x + 1, y + 1)) for y in range(8)} for x in
                        range(8)}
 
     @staticmethod
     def get_default_board():
+        """ Get a Board that would represent the start of a game """
         b = Board()
         for i in range(8):
             b[i + 1, 2] = Pawn(Color.WHITE)
@@ -87,12 +87,14 @@ class Board:
         return b
 
     def apply_move_copy(self, move):
+        """ Apply a move to a copy of the current board, then return that board. """
         cp = deepcopy(self)
         cp[move.end.location] = move.beg.value
         cp[move.beg.location] = None
         return cp
 
-    def __getitem__(self, pair: Tuple[Union[str, int], int]):
+    def __getitem__(self, pair: Tuple[Union[str, int], int]) -> BoardLocation:
+        """ Get a value from a location on the board """
         first, second = pair
         if isinstance(first, str):
             if len(first) != 1:
@@ -101,6 +103,7 @@ class Board:
         return self._state[first - 1][second - 1]
 
     def __setitem__(self, pair: Tuple[Union[str, int], int], value: Optional[Piece]):
+        """ Set a value into the board """
         first, second = pair
         if isinstance(first, str):
             if len(first) != 1:
@@ -109,6 +112,7 @@ class Board:
         self._state[first - 1][second - 1].value = value
 
     def __str__(self):
+        """ String representation of a board """
         bar = "|-----------------------|"
         out = " ----------------------- "
         for i in range(7, -1, -1):
@@ -127,10 +131,14 @@ class Board:
         return self.__str__()
 
     def __iter__(self):
-        return chain.from_iterable(y.values() for y in self._state.values())
+        for y in self._state.values():
+            yield from y.values()
 
     def pieces(self):
-        return (x.value for x in self if not x.empty)
+        """ Get all of the pieces on the board """
+        for x in self:
+            if not x.empty:
+                yield x.value
 
     @property
     def winner(self):
