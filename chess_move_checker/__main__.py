@@ -27,15 +27,18 @@ def main() -> int:
         # Validate that the board is in a valid state
         BoardStateValidator.validate(board, position_to_check.value.color)
         # Get all of the valid moves
-        valid_moves = position_to_check.value.get_valid_moves(board, position_to_check)
+        valid_moves = list(position_to_check.value.get_valid_moves(board, position_to_check))
         # Format everything to print
         string_of_location_to_check = position_to_check.value.character + chr(ord('a') - 1 + position_to_check.x) + str(
             position_to_check.y)
-
-        output_message = "LEGAL MOVES FOR {}:".format(string_of_location_to_check)
-        for move in valid_moves:
-            output_message += " {}{},".format(chr(ord('a') - 1 + move.end.x), move.end.y)
-        print(output_message[:-1])
+        if valid_moves:
+            output_message = "LEGAL MOVES FOR {}:".format(string_of_location_to_check)
+            for move in valid_moves:
+                output_message += " {}{},".format(chr(ord('a') - 1 + move.end.x), move.end.y)
+            output_message = output_message[:-1]
+        else:
+            output_message = "NO LEGAL MOVES FOR {}".format(string_of_location_to_check)
+        print(output_message)
         return 0
     except ParseException:
         print("Failed to parse input")
