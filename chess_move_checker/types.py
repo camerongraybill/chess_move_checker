@@ -11,20 +11,17 @@ class Color(Enum):
         """ The direction a player's pieces can move """
         if self == Color.BLACK:
             return -1
-        else:
-            return 1
+        return 1
 
     @property
     def home_row(self):
         """ The location of a player's home row (starting pawn row) """
         if self == Color.BLACK:
             return 7
-        else:
-            return 2
+        return 2
 
     @property
     def opponent_color(self):
         if self == Color.BLACK:
             return Color.WHITE
-        else:
-            return Color.BLACK
+        return Color.BLACK
