@@ -7,13 +7,6 @@ class Color(Enum):
     WHITE = "white"
 
     @property
-    def letter(self):
-        if self == Color.BLACK:
-            return "b"
-        else:
-            return "w"
-
-    @property
     def direction(self):
         """ The direction a player's pieces can move """
         if self == Color.BLACK:

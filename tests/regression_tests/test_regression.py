@@ -1,9 +1,10 @@
-from unittest import TestCase
-from contextlib import contextmanager
 import sys
+from contextlib import contextmanager
 from io import StringIO
 from os import listdir, path
+from unittest import TestCase
 from unittest.mock import patch
+
 from chess_move_checker.__main__ import main
 
 

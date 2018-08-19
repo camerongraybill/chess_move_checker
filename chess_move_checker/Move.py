@@ -60,9 +60,3 @@ class Move:
                 yield self._from.board[x, y].value
                 x += increment_value[0]
                 y += increment_value[1]
-
-    def __repr__(self):
-        return self.__str__()
-
-    def __str__(self):
-        return "{},{} -> {},{}".format(self.beg.x, self.beg.y, self.end.x, self.end.y)

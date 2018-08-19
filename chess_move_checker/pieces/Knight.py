@@ -1,12 +1,8 @@
-from .Piece import Piece
-from ..Types import Color
-from ..Utils import color_or_empty, player_in_check, MovementPatterns
+from .piece import Piece
+from ..utils import color_or_empty, player_in_check, MovementPatterns
 
 
 class Knight(Piece):
-    def __init__(self, color: Color):
-        super(Knight, self).__init__(color)
-
     @property
     def character(self):
         return "N"

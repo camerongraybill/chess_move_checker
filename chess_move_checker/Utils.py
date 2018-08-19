@@ -1,11 +1,12 @@
 from itertools import product
 from typing import Tuple, Generator
 
-from .Move import Move
+from .move import Move
 
 
 class MovementPatterns:
     """ All of the movement patterns for the pieces """
+
     @staticmethod
     def _get_incrementing_moves(board, start_position, increment: Tuple[int, int]) -> Generator[Move, None, None]:
         """ Get moves based on a starting position and a increment to repeatedly apply until it gets off the board. """
