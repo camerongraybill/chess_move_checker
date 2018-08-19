@@ -22,7 +22,7 @@ class ParserTest(TestCase):
         with self.assertRaises(ParseException):
             _ = Parser._string_repr_to_piece_and_pos("K", Color.BLACK)
 
-    @patch("chess_move_checker.Parser.input",
+    @patch("chess_move_checker.parser.input",
            MockInputCall(("Rf1, Kg1, Pf2, Ph2, Pg3", "Kb8, Ne8, Pa7, Pb7, Pc7, Ra5", "Rf1")))
     def test_parse_command_line(self):
         """ Validate that the parse command line function works and produces the same results as parsing a file"""
