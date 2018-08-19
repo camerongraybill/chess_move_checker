@@ -1,12 +1,13 @@
 from abc import ABC, abstractmethod
 from typing import Generator
 
-from ..Types import Color
-from ..Utils import color_or_empty, player_in_check
+from ..types import Color
+from ..utils import color_or_empty, player_in_check
 
 
 class Piece(ABC):
     """ Represents and abstract piece, includes the logic for what moves are legal for this piece. """
+
     def __init__(self, color: Color):
         self._color = color
 

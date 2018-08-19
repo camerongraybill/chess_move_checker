@@ -1,13 +1,9 @@
-from .Piece import Piece
-from ..Move import Move
-from ..Types import Color
-from ..Utils import player_in_check
+from .piece import Piece
+from ..move import Move
+from ..utils import player_in_check
 
 
 class Pawn(Piece):
-    def __init__(self, color: Color):
-        super(Pawn, self).__init__(color)
-
     @property
     def character(self):
         return "P"

@@ -1,10 +1,10 @@
 from typing import Tuple
 
-from .Board import Board
-from .Types import Color
+from .board import Board
 from .pieces import Piece, Bishop, King, Knight, Pawn, Queen, Rook
+from .types import Color
 
-""" A Dictionary of letter to constructor for each of the pieces. """
+# A Dictionary of letter to constructor for each of the pieces
 _char_to_piece = {
     'B': Bishop,
     'K': King,
@@ -21,6 +21,7 @@ class ParseException(Exception):
 
 class Parser:
     """ Parses input to create a board and piece to move """
+
     @staticmethod
     def _string_repr_to_piece_and_pos(string_repr: str, color: Color) -> Tuple[Piece, Tuple[str, int]]:
         """ Turns a three character string and a color into a piece and it's location on the board. """
@@ -70,7 +71,7 @@ class Parser:
         b = Board()
         white_splits = [x.strip() for x in input("WHITE: ").split(",")]
         black_splits = [x.strip() for x in input("BLACK: ").split(",")]
-        target_str = input("PIECE TO MOVE: ").split(",")
+        target_str = input("PIECE TO MOVE: ")
         try:
             for str_representation in white_splits:
                 piece, pos = Parser._string_repr_to_piece_and_pos(str_representation, Color.WHITE)

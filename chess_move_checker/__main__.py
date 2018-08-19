@@ -1,12 +1,7 @@
 from argparse import ArgumentParser, Namespace
-from random import choice
-from time import sleep
 
-from .Board import Board
-from .BoardStateValidator import BoardStateValidator
-from .Parser import Parser, ParseException
-from .Types import Color
-from .Utils import get_valid_moves_for
+from .board_state_validator import BoardStateValidator
+from .parser import Parser, ParseException
 
 
 def get_args() -> Namespace:
@@ -59,27 +54,8 @@ def main() -> int:
         return 1
 
 
-def play_game():
-    current_player = Color.WHITE
-    current_board = Board.get_default_board()
-    print(current_board)
-    while not current_board.winner:
-        print(current_board)
-        move = choice(list(get_valid_moves_for(current_board, current_player)))
-        print(move.beg, move.end)
-        current_board = current_board.apply_move_copy(move)
-        current_player = current_player.opponent_color
-        sleep(.5)
-
-
-def visualize_board(path_to_board):
-    board, position = Parser.parse_file(path_to_board)
-    print(board)
-    print(position)
-
-
 if __name__ == '__main__':
-    """ If run from the command line, call main() and exit with it's return code """
+    # If run from the command line, call main() and exit with it's return code
     from sys import exit as s_exit
 
     s_exit(main())

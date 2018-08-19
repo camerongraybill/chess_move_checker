@@ -1,9 +1,9 @@
 from collections import Counter
 
-from .Board import Board
-from .Types import Color
-from .Utils import player_in_check, player_in_checkmate
+from .board import Board
 from .pieces import King, Bishop, Knight, Rook, Queen, Pawn
+from .types import Color
+from .utils import player_in_check, player_in_checkmate
 
 
 class BoardStateValidator:

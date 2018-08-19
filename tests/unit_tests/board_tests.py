@@ -1,5 +1,6 @@
 from unittest import TestCase
-from chess_move_checker.Board import Board
+
+from chess_move_checker.board import Board
 
 
 class BoardTest(TestCase):
@@ -10,4 +11,3 @@ class BoardTest(TestCase):
             _ = my_board["ab", 1]
         with self.assertRaises(TypeError):
             my_board["ab", 1] = None
-
