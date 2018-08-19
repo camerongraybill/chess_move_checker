@@ -93,7 +93,7 @@ class Board:
         cp[move.beg.location] = None
         return cp
 
-    def __getitem__(self, pair: Tuple[Union[str, int], int]) -> BoardLocation:
+    def __getitem__(self, pair: Tuple[Union[str, int], int]):
         """ Get a value from a location on the board """
         first, second = pair
         if isinstance(first, str):
