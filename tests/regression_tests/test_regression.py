@@ -31,4 +31,5 @@ class RegressionTests(TestCase):
             with capture_stdout() as out, patch.object(sys, "argv", ["program", "-i", input_file]):
                 main()
             with open(output_file) as expected_output:
-                self.assertEqual(expected_output.read(), out.getvalue())
+                with self.subTest("Testing {}".format(input_file)):
+                    self.assertEqual(expected_output.read(), out.getvalue())
